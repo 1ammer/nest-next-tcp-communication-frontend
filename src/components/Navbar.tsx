@@ -8,6 +8,7 @@ import { Users, UserPlus, LogIn, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Button from './ui/Button';
 import { AUTH_EVENT_NAME, clearToken, getToken } from '@/lib/auth';
+import type { LucideIcon } from 'lucide-react';
 
 interface NavbarProps {
   /** Optional brand name to display */
@@ -25,6 +26,12 @@ interface NavbarProps {
   /** Additional className overrides */
   className?: string;
 }
+
+type NavLink = {
+  href: string;
+  label: string;
+  icon: LucideIcon | null;
+};
 
 const Navbar: React.FC<NavbarProps> = ({
   brandName = 'TaskApp',
@@ -59,8 +66,8 @@ const Navbar: React.FC<NavbarProps> = ({
     router.push('/login');
   };
 
-  // Default links
-  const defaultLinks = [{ href: '/', label: 'Home', icon: null }];
+  // Default links - explicitly type the array
+  const defaultLinks: NavLink[] = [{ href: '/', label: 'Home', icon: null }];
   if (!isAuthenticated) defaultLinks.push({ href: '/register', label: 'Register', icon: UserPlus });
   if (isAuthenticated) defaultLinks.push({ href: '/users', label: 'Users', icon: Users });
   else defaultLinks.push({ href: '/login', label: 'Login', icon: LogIn });
@@ -141,7 +148,7 @@ const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
-            <ThemeToggle onClick={onThemeToggle} aria-label="Toggle theme" />
+            <ThemeToggle onChange={onThemeToggle} ariaLabel="Toggle theme" />
           </div>
         </div>
       </div>
